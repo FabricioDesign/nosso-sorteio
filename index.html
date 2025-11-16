@@ -3,52 +3,992 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>NOSSO SORTEIO</title>
-  <!-- CSS atualizado -->
-  <link rel="stylesheet" href="style.css">
+  <title>NOSSO SORTEIO - Plataforma Profissional</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --secondary: #f59e0b;
+      --secondary-dark: #d97706;
+      --accent: #7c3aed;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --surface: #1e293b;
+        --text: #f1f5f9;
+        --text-muted: #94a3b8;
+        --border: #334155;
+        --border-light: #1e293b;
+        --primary-light: #1e3a8a;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    /* Header Profissional */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo-space {
+      width: 200px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+    }
+
+    .logo-space img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: var(--transition);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* Menu Mobile */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text);
+      padding: 0.5rem;
+    }
+
+    /* Banner Patrocinadores - TELA INTEIRA */
+    .sponsors-banner {
+      width: 100vw;
+      height: 400px;
+      margin: 2rem 0;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .sponsors-carousel {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .sponsor-slide {
+      min-width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .sponsor-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sponsor-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .sponsor-placeholder h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 800;
+    }
+
+    .sponsor-placeholder p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      padding: 0 2rem;
+    }
+
+    .carousel-btn {
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: var(--transition);
+      z-index: 10;
+    }
+
+    .carousel-btn:hover {
+      background: rgba(0,0,0,0.8);
+      transform: scale(1.1);
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.75rem;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .dot.active {
+      background: white;
+      transform: scale(1.2);
+    }
+
+    /* Layout Principal */
+    main.container {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 2rem;
+      padding: 2rem 20px;
+      flex: 1;
+    }
+
+    /* Cards Profissionais */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .hero {
+      grid-column: 1;
+    }
+
+    /* Tipografia Melhorada */
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text), var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.025em;
+    }
+
+    .lead {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    /* Formulários Profissionais */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--background);
+      color: var(--text);
+      font-size: 1rem;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+      background: var(--surface);
+    }
+
+    input[type="number"].error {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgb(239 68 68 / 0.1);
+    }
+
+    .error-message {
+      color: #ef4444;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    /* Botões Profissionais */
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      justify-content: center;
+      letter-spacing: -0.01em;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn.gold {
+      background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+      color: white;
+      box-shadow: 0 4px 15px rgb(245 158 11 / 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn.gold::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn.gold:hover:not(:disabled)::before {
+      left: 100%;
+    }
+
+    .btn.gold:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgb(245 158 11 / 0.4);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .btn.ghost:hover:not(:disabled) {
+      background: var(--background);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      align-items: center;
+    }
+
+    /* Resultado Profissional */
+    .result-view {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .winner-name {
+      font-size: 4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 1.5rem 0;
+      text-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+    }
+
+    .small-muted {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Modal Como Participar */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .close-modal:hover {
+      background: var(--background);
+      color: var(--text);
+    }
+
+    .modal h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .modal ol {
+      margin-left: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .modal li {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    /* Histórico Profissional */
+    #sidecard {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+
+    .history {
+      margin-top: 1.5rem;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+      background: var(--background);
+      transition: var(--transition);
+      border-left: 4px solid var(--primary);
+    }
+
+    .history-item:hover {
+      border-color: var(--primary);
+      transform: translateX(4px);
+    }
+
+    .empty-history {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+    }
+
+    /* Overlay Countdown Profissional */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .countdown-container {
+      text-align: center;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    .countdown-number {
+      font-size: 10rem;
+      font-weight: 900;
+      color: var(--secondary);
+      text-shadow: 0 0 50px rgb(245 158 11 / 0.8);
+      margin-bottom: 1rem;
+      font-feature-settings: "tnum";
+      animation: countdownPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .countdown-text {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+      opacity: 0.9;
+    }
+
+    .result-number {
+      font-size: 12rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--secondary), var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 60px rgb(245 158 11 / 0.6);
+      margin: 2rem 0;
+      animation: resultReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
+    }
+
+    .result-text {
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s ease-out 1s both;
+    }
+
+    .result-subtext {
+      color: #fff;
+      font-size: 1.2rem;
+      text-align: center;
+      opacity: 0.8;
+      animation: fadeInUp 0.8s ease-out 1.2s both;
+    }
+
+    /* Animações */
+    @keyframes countdownPop {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      70% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes resultReveal {
+      0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.3) rotate(10deg);
+      }
+      80% {
+        transform: scale(0.9) rotate(-5deg);
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% { 
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+    }
+
+    /* Footer Profissional */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      margin-top: auto;
+      padding: 3rem 0 2rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .social-icon {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--background);
+      transition: var(--transition);
+      text-decoration: none;
+      font-size: 1.5rem;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .social-icon.instagram {
+      background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+      color: white;
+    }
+
+    .social-icon.whatsapp {
+      background: #25D366;
+      color: white;
+    }
+
+    .social-icon.youtube {
+      background: #FF0000;
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Responsividade Avançada */
+    @media (max-width: 1024px) {
+      main.container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      #sidecard {
+        position: static;
+      }
+      
+      .sponsors-banner {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: var(--surface);
+        flex-direction: column;
+        padding: 2rem;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: var(--transition);
+        gap: 1rem;
+      }
+
+      nav.active {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1.5rem;
+      }
+
+      .footer-social {
+        justify-content: center;
+      }
+
+      .card {
+        padding: 2rem;
+      }
+
+      .sponsors-banner {
+        height: 250px;
+      }
+
+      .carousel-controls {
+        padding: 0 1rem;
+      }
+
+      .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .winner-name {
+        font-size: 3rem;
+      }
+
+      .countdown-number {
+        font-size: 8rem;
+      }
+
+      .result-number {
+        font-size: 8rem;
+      }
+
+      .result-text {
+        font-size: 1.5rem;
+      }
+
+      .controls {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 15px;
+      }
+      
+      .card {
+        padding: 1.5rem;
+      }
+      
+      .logo-space {
+        width: 150px;
+        height: 40px;
+      }
+      
+      .sponsors-banner {
+        height: 200px;
+        margin: 1rem 0;
+      }
+      
+      .sponsor-placeholder h3 {
+        font-size: 1.5rem;
+      }
+      
+      .sponsor-placeholder p {
+        font-size: 1rem;
+      }
+      
+      h1 {
+        font-size: 1.75rem;
+      }
+      
+      .winner-name {
+        font-size: 2.5rem;
+      }
+      
+      .countdown-number {
+        font-size: 6rem;
+      }
+      
+      .result-number {
+        font-size: 6rem;
+      }
+      
+      .result-text {
+        font-size: 1.3rem;
+      }
+      
+      .result-subtext {
+        font-size: 1rem;
+      }
+      
+      .modal-content {
+        padding: 2rem 1.5rem;
+      }
+      
+      .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+
+      .social-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Scrollbar Personalizada */
+    .history::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .history::-webkit-scrollbar-track {
+      background: var(--background);
+      border-radius: 3px;
+    }
+
+    .history::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .history::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+  
+  <!-- Ícones Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <header>
-  <div class="container header-inner">
-    <div class="brand">NOSSO SORTEIO</div>
-    <nav>
-      <a href="#home">Início</a>
-      <a href="#how">Como Participar</a>
-      <a href="#contact">Contato</a>
-      <span class="social">
-        <a href="https://www.instagram.com/fabriciodesigner_" target="_blank">Instagram</a>
-        <a href="https://wa.me/message/SNJ75IX6MKHBP1" target="_blank">WhatsApp</a>
-        <a href="https://www.youtube.com/@fabriciodesigner82" target="_blank">YouTube</a>
-      </span>
-    </nav>
-  </div>
-</header>
+    <div class="container header-inner">
+      <div class="logo-space">
+        <!-- SUA LOGO PNG AQUI - SEM SILHUETA -->
+        <img src="sua-logo.png" alt="NOSSO SORTEIO" onerror="this.style.display='none'">
+      </div>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <nav id="mainNav">
+        <a href="#home">Início</a>
+        <a onclick="openHowToModal()">Guia para Realizar Sorteios</a>
+        <a href="#contact">Contato</a>
+      </nav>
+    </div>
   </header>
 
+  <!-- Banner Patrocinadores - TELA INTEIRA -->
+  <div class="sponsors-banner">
+    <div class="sponsors-carousel" id="sponsorsCarousel">
+      <!-- Os patrocinadores serão carregados via JavaScript -->
+    </div>
+    <div class="carousel-controls">
+      <button class="carousel-btn" onclick="prevSponsor()">❮</button>
+      <button class="carousel-btn" onclick="nextSponsor()">❯</button>
+    </div>
+    <div class="carousel-dots" id="carouselDots">
+      <!-- Os dots serão criados via JavaScript -->
+    </div>
+  </div>
+
   <main class="container">
-    <section class="card hero">
+    <section class="card hero" id="home">
       <div>
-        <h1 id="home">Sorteio de Números — NOSSO SORTEIO</h1>
+        <h1>Sorteio de Números</h1>
         <p class="lead">Escolha o intervalo de números que deseja sortear. Clique em <strong>🎲 SORTEAR AGORA</strong> para iniciar a contagem regressiva e revelar o número sorteado.</p>
       </div>
 
       <div>
-        <label for="min-number">Número inicial</label>
-        <input type="number" id="min-number" value="0">
-        <label for="max-number" style="margin-top:8px">Número final</label>
-        <input type="number" id="max-number" value="100">
+        <div class="form-group">
+          <label for="min-number">Número inicial</label>
+          <input type="number" id="min-number" value="0" min="0" max="999999">
+          <div class="error-message" id="min-error">O número inicial deve ser menor que o número final</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="max-number">Número final</label>
+          <input type="number" id="max-number" value="100" min="1" max="1000000">
+          <div class="error-message" id="max-error">O número final deve ser maior que o número inicial</div>
+        </div>
+        
         <div class="controls">
           <div style="flex:1"></div>
-          <button id="sortear" class="btn gold">🎲 SORTEAR AGORA</button>
+          <button id="sortear" class="btn gold">
+            <span>🎲</span>
+            SORTEAR AGORA
+          </button>
         </div>
       </div>
 
-      <div id="result-card" class="card" style="margin-top:12px;display:none">
+      <div id="result-card" class="card" style="margin-top:1.5rem;display:none">
         <div class="result-view" id="result-view">
-          <div style="font-size:18px;color:var(--muted)">Resultado do último sorteio</div>
+          <div style="font-size:1.125rem;color:var(--text-muted)">Resultado do último sorteio</div>
           <div class="winner-name" id="winner-name">—</div>
           <div class="small-muted" id="winner-meta">Sorteado em —</div>
-          <div style="display:flex;gap:8px;margin-top:8px">
+          <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap;">
             <button class="btn" id="download-pdf">Gerar PDF</button>
             <button class="btn ghost" id="back-to-list">Voltar</button>
           </div>
@@ -58,31 +998,480 @@
 
     <aside>
       <div class="card" id="sidecard">
-        <div style="font-weight:800">Histórico</div>
-        <div class="history" id="history"></div>
-        <div style="margin-top:12px;display:flex;gap:8px">
-          <button id="export-history" class="btn ghost">Exportar histórico</button>
+        <div style="font-weight:800;font-size:1.25rem;">Histórico de Sorteios</div>
+        <div class="history" id="history">
+          <div class="empty-history" id="empty-history">
+            Nenhum sorteio realizado ainda
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button id="export-history" class="btn ghost">Exportar</button>
           <button id="clear-history" class="btn ghost">Limpar</button>
         </div>
       </div>
     </aside>
   </main>
 
-  <div class="overlay" id="overlay">
-    <div style="text-align:center">
-      <div class="countdown-number" id="countdown">10</div>
-      <div style="color:#fff;margin-top:12px;font-weight:600;text-align:center">Preparando sorteio...</div>
+  <!-- Modal Como Participar -->
+  <div id="howToModal" class="modal">
+    <div class="modal-content">
+      <button class="close-modal" onclick="closeHowToModal()">×</button>
+      <h2>📋 Guia para Realizar Sorteios</h2>
+      <ol>
+        <li><strong>Escolha o intervalo de números</strong> que deseja sortear nos campos acima</li>
+        <li><strong>Clique no botão "SORTEAR AGORA"</strong> para iniciar o processo</li>
+        <li><strong>Aguarde a contagem regressiva</strong> enquanto preparamos o sorteio</li>
+        <li><strong>Veja o resultado</strong> que aparecerá na tela automaticamente</li>
+        <li><strong>Salve o comprovante</strong> usando o botão "Gerar PDF"</li>
+        <li><strong>Acompanhe o histórico</strong> de todos os sorteios realizados</li>
+      </ol>
+      <p><strong>Observação:</strong> Todos os sorteios são realizados de forma 100% aleatória e transparente, garantindo total imparcialidade nos resultados.</p>
+      <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+        <button class="btn" onclick="closeHowToModal()">Voltar ao Sorteio</button>
+        <button class="btn ghost" onclick="closeHowToModal()">Fechar</button>
+      </div>
     </div>
   </div>
 
-  <footer>
-    © 2025 - NOSSO SORTEIO. Feito por Fabricio.
+  <!-- Overlay Countdown -->
+  <div class="overlay" id="overlay">
+    <div class="countdown-container" id="countdownContainer">
+      <div class="countdown-number" id="countdown">5</div>
+      <div class="countdown-text" id="countdownText">Preparando sorteio...</div>
+    </div>
+  </div>
+
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <h3 style="margin-bottom:0.5rem;">NOSSO SORTEIO</h3>
+          <p style="color: var(--text-muted);">Plataforma profissional para sorteios aleatórios</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/fabriciodesigner_" target="_blank" class="social-icon instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://wa.me/message/RSSQTDAOTGAIC1" target="_blank" class="social-icon whatsapp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+          <a href="https://www.youtube.com/@fabriciodesigner82" target="_blank" class="social-icon youtube">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 NOSSO SORTEIO. Todos os direitos reservados. Feito por Fabrício Designer</p>
+      </div>
+    </div>
   </footer>
 
   <!-- Bibliotecas -->
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-  <!-- JS atualizado -->
-  <script src="main.js" defer></script>
+  
+  <!-- JavaScript -->
+  <script>
+    // Menu Mobile
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+
+    menuToggle.addEventListener('click', () => {
+      mainNav.classList.toggle('active');
+    });
+
+    // Fechar menu ao clicar em um link
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        mainNav.classList.remove('active');
+      });
+    });
+
+    // Modal Como Participar
+    function openHowToModal() {
+      document.getElementById('howToModal').style.display = 'flex';
+    }
+
+    function closeHowToModal() {
+      document.getElementById('howToModal').style.display = 'none';
+    }
+
+    // Fechar modal ao clicar fora
+    document.getElementById('howToModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeHowToModal();
+      }
+    });
+
+    // Carrossel de Patrocinadores - 3 SEGUNDOS
+    let currentSponsor = 0;
+    const sponsors = [
+      { 
+        src: 'pat1.jpg', 
+        alt: 'Patrocinador 1',
+        title: 'Patrocinador Diamante',
+        description: 'Apoiador oficial do NOSSO SORTEIO'
+      },
+      { 
+        src: 'pat2.jpg', 
+        alt: 'Patrocinador 2',
+        title: 'Patrocinador Ouro',
+        description: 'Parceiro premium da nossa plataforma'
+      },
+      { 
+        src: 'pat3.jpg', 
+        alt: 'Patrocinador 3',
+        title: 'Patrocinador Prata',
+        description: 'Apoiador especial dos nossos sorteios'
+      }
+    ];
+
+    function initCarousel() {
+      const carousel = document.getElementById('sponsorsCarousel');
+      const dots = document.getElementById('carouselDots');
+      
+      carousel.innerHTML = '';
+      dots.innerHTML = '';
+      
+      sponsors.forEach((sponsor, index) => {
+        // Slide
+        const slide = document.createElement('div');
+        slide.className = 'sponsor-slide';
+        
+        const img = document.createElement('img');
+        img.src = sponsor.src;
+        img.alt = sponsor.alt;
+        
+        // Placeholder que aparece se a imagem não carregar
+        const placeholder = document.createElement('div');
+        placeholder.className = 'sponsor-placeholder';
+        placeholder.innerHTML = `
+          <h3>${sponsor.title}</h3>
+          <p>${sponsor.description}</p>
+          <p style="margin-top: 1rem; font-size: 1rem; opacity: 0.7;">Adicione sua imagem em: ${sponsor.src}</p>
+        `;
+        
+        // Verifica se a imagem carrega
+        img.onload = function() {
+          placeholder.style.display = 'none';
+        };
+        
+        img.onerror = function() {
+          this.style.display = 'none';
+          placeholder.style.display = 'flex';
+        };
+        
+        slide.appendChild(img);
+        slide.appendChild(placeholder);
+        carousel.appendChild(slide);
+        
+        // Dot
+        const dot = document.createElement('div');
+        dot.className = `dot ${index === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSponsor(index);
+        dots.appendChild(dot);
+      });
+      
+      updateCarousel();
+    }
+
+    function updateCarousel() {
+      const carousel = document.getElementById('sponsorsCarousel');
+      const dots = document.querySelectorAll('.dot');
+      
+      carousel.style.transform = `translateX(-${currentSponsor * 100}%)`;
+      
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSponsor);
+      });
+    }
+
+    function nextSponsor() {
+      currentSponsor = (currentSponsor + 1) % sponsors.length;
+      updateCarousel();
+    }
+
+    function prevSponsor() {
+      currentSponsor = (currentSponsor - 1 + sponsors.length) % sponsors.length;
+      updateCarousel();
+    }
+
+    function goToSponsor(index) {
+      currentSponsor = index;
+      updateCarousel();
+    }
+
+    // Auto-rotate carousel - 3 SEGUNDOS
+    let carouselInterval = setInterval(nextSponsor, 3000);
+
+    // Pausar carousel quando hover
+    document.querySelector('.sponsors-banner').addEventListener('mouseenter', () => {
+      clearInterval(carouselInterval);
+    });
+
+    document.querySelector('.sponsors-banner').addEventListener('mouseleave', () => {
+      carouselInterval = setInterval(nextSponsor, 3000);
+    });
+
+    // Sistema de Sorteio
+    let history = JSON.parse(localStorage.getItem('sorteioHistory')) || [];
+    let isSorting = false;
+
+    // Validação dos inputs
+    function validateInputs() {
+      const min = parseInt(document.getElementById('min-number').value);
+      const max = parseInt(document.getElementById('max-number').value);
+      const minError = document.getElementById('min-error');
+      const maxError = document.getElementById('max-error');
+      const minInput = document.getElementById('min-number');
+      const maxInput = document.getElementById('max-number');
+      
+      let isValid = true;
+      
+      // Reset errors
+      minError.style.display = 'none';
+      maxError.style.display = 'none';
+      minInput.classList.remove('error');
+      maxInput.classList.remove('error');
+      
+      if (isNaN(min) || isNaN(max)) {
+        minError.textContent = 'Por favor, insira números válidos';
+        minError.style.display = 'block';
+        minInput.classList.add('error');
+        isValid = false;
+      } else if (min >= max) {
+        minError.textContent = 'O número inicial deve ser menor que o final';
+        minError.style.display = 'block';
+        minInput.classList.add('error');
+        isValid = false;
+      } else if (min < 0) {
+        minError.textContent = 'O número inicial não pode ser negativo';
+        minError.style.display = 'block';
+        minInput.classList.add('error');
+        isValid = false;
+      } else if (max > 1000000) {
+        maxError.textContent = 'O número final não pode ser maior que 1.000.000';
+        maxError.style.display = 'block';
+        maxInput.classList.add('error');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    document.getElementById('sortear').addEventListener('click', function() {
+      if (isSorting) return;
+      
+      if (!validateInputs()) {
+        return;
+      }
+      
+      const min = parseInt(document.getElementById('min-number').value);
+      const max = parseInt(document.getElementById('max-number').value);
+      
+      isSorting = true;
+      this.disabled = true;
+      
+      startCountdown(min, max);
+    });
+
+    function startCountdown(min, max) {
+      const overlay = document.getElementById('overlay');
+      const countdownElement = document.getElementById('countdown');
+      const countdownText = document.getElementById('countdownText');
+      const countdownContainer = document.getElementById('countdownContainer');
+      
+      let count = 5;
+      overlay.style.display = 'flex';
+      countdownText.textContent = 'Preparando sorteio...';
+      
+      const countdownInterval = setInterval(() => {
+        countdownElement.textContent = count;
+        countdownElement.style.animation = 'none';
+        void countdownElement.offsetWidth; // Trigger reflow
+        countdownElement.style.animation = 'countdownPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        
+        count--;
+        
+        if (count < 0) {
+          clearInterval(countdownInterval);
+          const resultado = Math.floor(Math.random() * (max - min + 1)) + min;
+          showResult(resultado, min, max);
+          
+          // Reativar botão
+          isSorting = false;
+          document.getElementById('sortear').disabled = false;
+        }
+      }, 1000);
+    }
+
+    function showResult(resultado, min, max) {
+      const overlay = document.getElementById('overlay');
+      const countdownContainer = document.getElementById('countdownContainer');
+      
+      // Criar conteúdo do resultado
+      countdownContainer.innerHTML = `
+        <div class="result-number">${resultado}</div>
+        <div class="result-text">🎉 NÚMERO SORTEADO! 🎉</div>
+        <div class="result-subtext">Entre ${min} e ${max}</div>
+      `;
+      
+      // Efeito confetti em cascata
+      const duration = 3000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 2001 };
+      
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+      
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+        
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+        
+        const particleCount = 50 * (timeLeft / duration);
+        
+        // Confetti da esquerda
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+        });
+        
+        // Confetti da direita
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+        });
+      }, 250);
+      
+      // Fechar overlay após 3 segundos e mostrar resultado na página
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        showResultOnPage(resultado, min, max);
+      }, 3000);
+    }
+
+    function showResultOnPage(resultado, min, max) {
+      const resultCard = document.getElementById('result-card');
+      const winnerName = document.getElementById('winner-name');
+      const winnerMeta = document.getElementById('winner-meta');
+      
+      winnerName.textContent = resultado;
+      winnerMeta.textContent = `Sorteado entre ${min} e ${max} em ${new Date().toLocaleString()}`;
+      resultCard.style.display = 'block';
+      
+      // Scroll para o resultado
+      resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Adicionar ao histórico
+      history.unshift({
+        numero: resultado,
+        min: min,
+        max: max,
+        data: new Date().toLocaleString()
+      });
+      
+      // Manter apenas últimos 20 sorteios
+      history = history.slice(0, 20);
+      localStorage.setItem('sorteioHistory', JSON.stringify(history));
+      updateHistory();
+    }
+
+    function updateHistory() {
+      const historyElement = document.getElementById('history');
+      const emptyHistory = document.getElementById('empty-history');
+      
+      historyElement.innerHTML = '';
+      
+      if (history.length === 0) {
+        emptyHistory.style.display = 'block';
+        return;
+      }
+      
+      emptyHistory.style.display = 'none';
+      
+      history.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `
+          <strong>Número ${item.numero}</strong><br>
+          <small>Entre ${item.min} e ${item.max}</small><br>
+          <small>${item.data}</small>
+        `;
+        historyElement.appendChild(div);
+      });
+    }
+
+    // Botão Voltar
+    document.getElementById('back-to-list').addEventListener('click', function() {
+      document.getElementById('result-card').style.display = 'none';
+    });
+
+    // Botão Exportar
+    document.getElementById('export-history').addEventListener('click', function() {
+      if (history.length === 0) {
+        alert('Nenhum sorteio no histórico para exportar');
+        return;
+      }
+      
+      let csv = 'Número,De,Até,Data\n';
+      history.forEach(item => {
+        csv += `${item.numero},${item.min},${item.max},"${item.data}"\n`;
+      });
+      
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `historico-sorteios-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+
+    // Botão Limpar
+    document.getElementById('clear-history').addEventListener('click', function() {
+      if (confirm('Tem certeza que deseja limpar todo o histórico?')) {
+        history = [];
+        localStorage.setItem('sorteioHistory', JSON.stringify(history));
+        updateHistory();
+      }
+    });
+
+    // Botão Gerar PDF
+    document.getElementById('download-pdf').addEventListener('click', function() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      const numero = document.getElementById('winner-name').textContent;
+      const meta = document.getElementById('winner-meta').textContent;
+      
+      doc.setFontSize(20);
+      doc.text('COMPROVANTE DE SORTEIO', 105, 30, { align: 'center' });
+      
+      doc.setFontSize(16);
+      doc.text('Número Sorteado:', 20, 60);
+      doc.setFontSize(32);
+      doc.text(numero, 105, 60, { align: 'center' });
+      
+      doc.setFontSize(12);
+      doc.text(meta, 20, 80);
+      doc.text(`Emitido em: ${new Date().toLocaleString()}`, 20, 90);
+      
+      doc.save(`sorteio-${numero}-${new Date().getTime()}.pdf`);
+    });
+
+    // Validação em tempo real
+    document.getElementById('min-number').addEventListener('input', validateInputs);
+    document.getElementById('max-number').addEventListener('input', validateInputs);
+
+    // Inicializar
+    initCarousel();
+    updateHistory();
+  </script>
 </body>
 </html>
